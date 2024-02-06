@@ -4,23 +4,41 @@ package com.jarikkomarik.stack;
  * https://leetcode.com/problems/largest-rectangle-in-histogram/
  */
 public class LargestRectangleInHistogram {
+
+    /**
+     *
+     * @param heights
+     * @return
+     */
     public int largestRectangleArea(int[] heights) {
-        int left = 0;
-        int right = heights.length - 1;
+        return -1;
+    }
+
+
+
+    /**
+     * Working O(n * n) solution
+     * @param heights
+     * @return
+     */
+    public int largestRectangleAreaSlow(int[] heights) {
         int max = heights[0];
 
-        while (left <= right) {
-            int min = heights[left];
-            int counter = 1;
-            for (int i = left + 1; i <= right; i++) {
-                min = Math.min(min, heights[i]);
-                counter++;
+        for (int i = 0; i < heights.length; i++) {
+            int tempMax = heights[i];
+            int nextLeft = i - 1;
+            while (nextLeft >= 0 && heights[nextLeft] >= heights[i]){
+                tempMax += heights[i];
+                nextLeft--;
             }
-            System.out.println(String.format("Left %d, right %d, counter %d, min %d, calculated area %d", left, right, counter, min, counter * min));
-            max = Math.max(max, counter * min);
-            if (heights[left] <= heights[right]) left++;
-            else right--;
+            int nextRight = i + 1;
+            while (nextRight < heights.length && heights[nextRight] >= heights[i]){
+                tempMax += heights[i];
+                nextRight++;
+            }
+            max = Math.max(max, tempMax);
         }
+
 
         return max;
     }
